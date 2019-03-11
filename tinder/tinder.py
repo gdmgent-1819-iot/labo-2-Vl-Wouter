@@ -5,17 +5,13 @@ import sys
 
 sense = SenseHat()
 
-# r = requests.get('https://randomuser.me/api/').json()
-# data = r['results'][0]
-
-# print(data['name'])
-# sense.clear()
-
+# Function to load saved data in json file
 def loadData():
   with open('data.json') as json_data:
     data = json.load(json_data)
     return data
 
+# Function to get and display a user from the API
 def getUser():
   request = requests.get('https://randomuser.me/api').json()
   data = request['results'][0]
@@ -24,6 +20,7 @@ def getUser():
   sense.show_message(name)
   return name
 
+# Function to save data back to json file
 def saveData(user, choice, dataset):
   data = dataset
   if(choice == 'liked'):
@@ -33,8 +30,7 @@ def saveData(user, choice, dataset):
   with open('data.json', 'w') as outfile:
     json.dump(data, outfile)
   
-
-
+# Main application function
 def main():
   try:
     data = loadData()
@@ -49,6 +45,7 @@ def main():
     else:
       choice = 'liked'
     saveData(user, choice, data)
+    time.sleep(1)
     main()
   except KeyboardInterrupt:
     print('Interrupting process')
